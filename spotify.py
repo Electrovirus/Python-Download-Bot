@@ -9,7 +9,9 @@ import config
 import random
 import requests as req
 
-bot = telebot.TeleBot(config.token)
+Token = ''
+owner = ''
+bot = telebot.TeleBot(Token)
 
 @bot.message_handler(commands=['start', 'help'])
 def welcome(m):
@@ -61,7 +63,7 @@ def id(m):      # info menu
     p = m.pinned_message
     fromm = m.forward_from
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("\xF0\x9F\x98\x8A Taylor Team \xF0\x9F\x98\x8A", url="https://telegram.me/taylor_team"))
+    markup.add(types.InlineKeyboardButton("Spotify Bot", url="https://telegram.me/Ev_official"))
 #info text
     bot.send_chat_action(cid, "typing")
     bot.reply_to(m, "*ID from* : ```{}``` \n\n *Chat name* : ```{}``` \n\n\n *Your Username* : ```{}``` \n\n *Your First Name* : ```{}```\n\n *Your Last Name* : ```{}```\n\n *Type From* : ```{}``` \n\n *Msg data* : ```{}```\n\n *Your Msg* : ```{}```\n\n* pind msg * : ```{}```\n\n *from* : ```{}```".format(cid,title,usr,f,l,t,d,text,p,fromm), parse_mode="Markdown", reply_markup=markup)
@@ -75,6 +77,6 @@ def feedback(m):
     str = m.text
     txt = str.replace('/feedback', '')
     bot.send_message(senderid, "_Thank Your feedback sent_", parse_mode="Markdown")
-    bot.send_message(config.owner, "msg : {}\nid : {}\nname : {}\nUsername : @{}".format(txt,senderid,first,usr))
+    bot.send_message(owner, "msg : {}\nid : {}\nname : {}\nUsername : @{}".format(txt,senderid,first,usr))
 
 bot.polling(True)
