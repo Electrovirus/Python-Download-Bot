@@ -12,7 +12,6 @@ from time import sleep
 import sys
 import re
 import urllib
-import methods as bot
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
