@@ -21,6 +21,33 @@ def welcome(m):
     ret_msg = bot.send_message(cid, "Hello I'm Spotify bot \n\nCommands : \n/spotify  [songname]-[artist] \n/id \n/feedback [text]", disable_notification=True, reply_markup=markup)
     assert ret_msg.message_id
 
+@bot.message_handler(commands=['spotify'])
+def m(m):
+        try:
+            url = urllib.urlopen("https://api.spotify.com/v1/search?limit=1&type=track&q={}".format(m.text.replace('/spotify','')))
+            data = url.read()
+            js = json.loads(data)
+            files = js['tracks']['items'][0]['preview_url']
+            name = js['tracks']['items'][0]['name']
+            pic = js['tracks']['items'][0]['album']['images'][1]['url']
+            art = js['tracks']['items'][0]['artists'][0]['name']
+            bot.send_message(m.chat.id, '<b>Name</b> : {}\n<b>Artist : </b>{}'.format(name,art),parse_mode='HTML')
+            bot.send_chat_action(m.chat.id, 'record_audio')
+            urllib.urlretrieve(files,'spotify.mp3')
+            urllib.urlretrieve(pic,'spotify.png')
+            bot.send_audio(m.chat.id, open('spotify.mp3'), title=name)
+            bot.send_sticker(m.chat.id, open('spotify.png'))
+            hash = 'spotify'
+            os.remove('spotify.mp3')
+            os.remove('spotify.png')
+            print ' send /spotify'
+        except KeyError:
+            bot.send_message(m.chat.id, 'Error')
+        except IndexError:
+            bot.send_message(m.chat.id, 'Error')
+        except IOError:
+            bot.send_message(m.chat.id, 'Error')
+
 @bot.message_handler(commands=['id', 'ids', 'info', 'me'])
 def id(m):      # info menu
     cid = m.chat.id
