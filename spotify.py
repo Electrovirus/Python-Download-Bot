@@ -15,14 +15,10 @@ bot = telebot.TeleBot(config.token)
 def welcome(m):
     cid = m.chat.id
     markup = types.InlineKeyboardMarkup()
-    a = types.InlineKeyboardButton("Taylor Team \xE2\x9C\x8C", url="https://telegram.me/taylor_team")
-    c = types.InlineKeyboardButton("Add group \xE2\x9C\x8C", url="https://telegram.me/ID_bot_robot?startgroup=test")
+    a = types.InlineKeyboardButton("Developer", url="https://telegram.me/Electrovirus")
+    c = types.InlineKeyboardButton("Our channel", url="https://telegram.me/Ev_official")
     markup.add(a, c)
-    b = types.InlineKeyboardButton("Developer ID bot \xE2\x9C\x8C", url="https://telegram.me/negative_officiall")
-    markup.add(b)
-    nn = types.InlineKeyboardButton("Inline Mode", switch_inline_query='')
-    markup.add(nn)
-    ret_msg = bot.send_message(cid, "Hello I'm ID bot \n\n Send : \n  /id or /me or /info   \n\n\n get your id : \n /idme (just pv) \nsend Your feedback : /feedback [msg]\n\n\n list inline mod : \ntype @ID_bot_robot\n\nBot version 3", disable_notification=True, reply_markup=markup)
+    ret_msg = bot.send_message(cid, "Hello I'm Spotify bot \n\nCommands : \n/spotify  [songname]-[artist] \n/id \n/feedback [text]", disable_notification=True, reply_markup=markup)
     assert ret_msg.message_id
 
 @bot.message_handler(commands=['id', 'ids', 'info', 'me'])
@@ -51,7 +47,7 @@ def feedback(m):
     usr = m.from_user.username
     str = m.text
     txt = str.replace('/feedback', '')
-    bot.send_message(senderid, "_Thank Your Msg Posted admin_", parse_mode="Markdown")
+    bot.send_message(senderid, "_Thank Your feedback sent_", parse_mode="Markdown")
     bot.send_message(config.owner, "msg : {}\nid : {}\nname : {}\nUsername : @{}".format(txt,senderid,first,usr))
 
 bot.polling(True)
