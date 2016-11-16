@@ -9,8 +9,8 @@ import config
 import random
 import requests as req
 
-Token = ''
-owner = ''
+Token = '238381588:AAEcEw57jkfEp8u91OSj4BhzQMU5OzjQ87Y'
+owner = '184018132'
 bot = telebot.TeleBot(Token)
 
 @bot.message_handler(commands=['start', 'help'])
