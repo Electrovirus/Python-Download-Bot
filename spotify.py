@@ -7,6 +7,14 @@ import json
 import os
 import random
 import requests as req
+import json, os
+from time import sleep
+import sys
+import re
+import urllib
+import methods as bot
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 Token = '238381588:AAEcEw57jkfEp8u91OSj4BhzQMU5OzjQ87Y'
 owner = '184018132'
