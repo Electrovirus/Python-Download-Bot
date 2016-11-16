@@ -5,7 +5,6 @@ import telebot
 from telebot import types
 import json
 import os
-import config
 import random
 import requests as req
 
