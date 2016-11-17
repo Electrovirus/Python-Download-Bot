@@ -26,34 +26,40 @@ def welcome(m):
     a = types.InlineKeyboardButton("Developer", url="https://telegram.me/Electrovirus")
     c = types.InlineKeyboardButton("Our channel", url="https://telegram.me/Ev_official")
     markup.add(a, c)
-    ret_msg = bot.send_message(cid, "Hello I'm Spotify bot \n\nCommands : \n/spotify  [songname]-[artist] \n/id \n/feedback [text]", disable_notification=True, reply_markup=markup)
+    ret_msg = bot.send_message(cid, "Hello I'm imdb bot \n\nCommands : \n/imdb [movie name] \n/id \n/feedback [text]", disable_notification=True, reply_markup=markup)
     assert ret_msg.message_id
 
-@bot.message_handler(commands=['spotify'])
+
+@bot.message_handler(regexp='^(/imdb) (.*)')
 def m(m):
         try:
-            url = urllib.urlopen("https://api.spotify.com/v1/search?limit=1&type=track&q={}".format(m.text.replace('/spotify','')))
-            data = url.read()
-            js = json.loads(data)
-            files = js['tracks']['items'][0]['preview_url']
-            name = js['tracks']['items'][0]['name']
-            pic = js['tracks']['items'][0]['album']['images'][1]['url']
-            art = js['tracks']['items'][0]['artists'][0]['name']
-            bot.send_message(m.chat.id, '<b>Name</b> : {}\n<b>Artist : </b>{}'.format(name,art),parse_mode='HTML')
-            bot.send_chat_action(m.chat.id, 'record_audio')
-            urllib.urlretrieve(files,'spotify.mp3')
-            urllib.urlretrieve(pic,'spotify.png')
-            bot.send_audio(m.chat.id, open('spotify.mp3'), title=name)
-            bot.send_sticker(m.chat.id, open('spotify.png'))
-            hash = 'spotify'
-            os.remove('spotify.mp3')
-            os.remove('spotify.png')
-            print ' send /spotify'
-        except KeyError:
-            bot.send_message(m.chat.id, 'Error')
-        except IndexError:
-            bot.send_message(m.chat.id, 'Error')
+            r = urllib.urlopen('http://www.omdbapi.com/?t={}&'.format(m.text.replace('/imdb','')))
+            data = r.read()
+            pjson = json.loads(data)
+            title = pjson['Title']
+            year = pjson['Year']
+            runtime = pjson['Runtime']
+            genre = pjson['Genre']
+            language = pjson['Language']
+            poster = pjson['Poster']
+            urllib.urlretrieve(poster, 'imdb.jpg')
+            bot.send_message(m.chat.id, """
+<b>Movie name</b> : {}
+<b>Year of action</b> : {}
+<b>Movie time</b> : {}
+<b>Movie sort</b> : {}
+<b>Language</b> : {}
+            """.format(title,year,runtime,genre,language), parse_mode='HTML')
+            bot.send_sticker(m.chat.id, open('imdb.jpg'))
         except IOError:
+            bot.send_message(m.chat.id, """
+<b>Movie name</b> : {}
+<b>Year of action</b> : {}
+<b>Movie time</b> : {}
+<b>Movie sort</b> : {}
+<b>Language</b> : {}
+            """.format(title,year,runtime,genre,language), parse_mode='HTML')
+        except KeyError:
             bot.send_message(m.chat.id, 'Error')
 
 @bot.message_handler(commands=['id', 'ids', 'info', 'me'])
@@ -69,7 +75,7 @@ def id(m):      # info menu
     p = m.pinned_message
     fromm = m.forward_from
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("Spotify Bot", url="https://telegram.me/Ev_official"))
+    markup.add(types.InlineKeyboardButton("Imdb Bot", url="https://telegram.me/Ev_official"))
 #info text
     bot.send_chat_action(cid, "typing")
     bot.reply_to(m, "*ID from* : ```{}``` \n\n *Chat name* : ```{}``` \n\n\n *Your Username* : ```{}``` \n\n *Your First Name* : ```{}```\n\n *Your Last Name* : ```{}```\n\n *Type From* : ```{}``` \n\n *Msg data* : ```{}```\n\n *Your Msg* : ```{}```\n\n* pind msg * : ```{}```\n\n *from* : ```{}```".format(cid,title,usr,f,l,t,d,text,p,fromm), parse_mode="Markdown", reply_markup=markup)
