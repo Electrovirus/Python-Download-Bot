@@ -1,1 +1,1 @@
-screen python spotify.py
+screen python imdb.py
