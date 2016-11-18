@@ -15,7 +15,7 @@ import urllib
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-Token = '289743790:AAGbc4A88LL-bQGCiYyjB2dMblw2vvMFS3Y'
+Token = ''
 owner = '184018132'
 bot = telebot.TeleBot(Token)
 
